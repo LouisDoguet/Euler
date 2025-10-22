@@ -1,18 +1,15 @@
-from lib import comp, ana
+from lib import comp, ana, foppl
 import numpy as np
 import matplotlib.pyplot as plt
 
-x = np.linspace(-3,3,150)
-y = np.linspace(-2,2,100)
-X,Y = np.meshgrid(x,y)
-Z = X+1j*Y
+domain = ana.Space([-2,3],[-2,2],1000)
+zoom = ana.Space([-0,2],[-1.2,1.2],1000)
 
-def Wcylinder(U,r,z):
-    return (z + r**2/z)*U
+r = 1.5
+theta = 20
+z0 = r*np.exp(1j*np.deg2rad(theta))
 
-def Wcylindercirc(U,r,rho,z):
-    return Wcylinder(U,r,z) * 1j * rho/(2*np.pi) * np.log(z)
-
-W = ana.AnalyticalFunction(U=1, r=1, z=Z, f=Wcylinder)
-W.grid_solve(X,Y)
-W.plot()
+F = foppl.Foppl(U=2, r=1, rho=5, z0=z0, space=domain)
+Fzoom = F.updateSpace(zoom)
+F.plot()
+Fzoom.plot()
