@@ -7,7 +7,7 @@ def Wfreevortex(rho,z):
     return -rho/(2*np.pi) * np.log(z)
 
 def derWfreevortex(rho,z):
-    return rho/(2*np.pi*z)
+    return 1j*rho/(2*np.pi*z)
 
 def Wcylindercirc(U,r,rho,z):
     return Wcylinder(U,r,z) + 1j * rho/(2*np.pi) * np.log(z)

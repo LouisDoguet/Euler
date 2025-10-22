@@ -5,8 +5,6 @@ import numpy as np
 import lib.lib_potential as pot
 import copy
 
-# Add the Complex numbers library
-
 class AnalyticalFunction:
 
     def __init__(self,**kwargs):
@@ -39,25 +37,6 @@ class AnalyticalFunction:
         self.Z = comp.Complex(GRD) 
         return self.Z
 
-    def plot(self,nlevels=300):
-        if not self.grid_generated:
-            raise ValueError("please .grid_solve(X,Y) before plotting")
-        X = self.X
-        Y = self.Y
-        Z = self.Z
-        fig, ax = plt.subplots()
-        cr = ax.contour(X, Y, np.real(Z), nlevels, colors='red', linewidths=1)
-        ci = ax.contour(X, Y, np.imag(Z), nlevels, colors='black', linewidths=1)
-
-        # ax.clabel(cr, inline=True, fontsize=8, fmt='%1.2f')
-        # ax.clabel(ci, inline=True, fontsize=8, fmt='%1.2f')
-
-        ax.set_xlabel('X')
-        ax.set_ylabel('Y')
-        ax.set_title('Isolines: psi (red), phi (black)')
-        ax.set_aspect('equal')
-        plt.grid(True)
-        plt.show()
 
 class Space:
     def __init__(self,xlim,ylim,Nx,Ny=None):
@@ -74,13 +53,22 @@ class Space:
         self.X, self.Y = np.meshgrid(self._x,self._y)
         self.Z = self.X+1j*self.Y
 
+    def xy2rt(self,center):
+        x0 = center[0]
+        y0 = center[1]
+        x = self.X - x0
+        y = self.Y - y0
+        theta = np.arctan(y/x)-np.pi/2
+        r = x**2 + y**2
+        return r, theta
+
     def plot(self,u,v,nfig=1,title=''):
 
         speed = np.sqrt(u**2 + v**2)
 
         fig = plt.figure(nfig)  # Reuse figure if it exists
         ax = fig.gca()
-        ax.streamplot(self.X,self.Y,u,v,density=3,color=speed,linewidth=1,arrowsize=0.4,cmap='viridis',broken_streamlines=True)
+        ax.streamplot(self.X,self.Y,u,v,density=3,color=speed,linewidth=1,arrowsize=0.5,cmap='viridis',broken_streamlines=True)
         ax.set_aspect('equal')
         ax.set_title(title)
         ax.set_xlabel('X')
@@ -104,6 +92,16 @@ class __Potential__:
         obj.patches = self.patches + other.patches
         return obj
 
+    def __sub__(self,other):
+        obj = __Potential__(self._space,[np.real(self.offset), np.imag(self.offset)] )
+        obj.u = self.u - other.u
+        obj.v = self.v - other.v
+        obj.patches = self.patches + other.patches
+        return obj
+
+    def getVelocities(self):
+        return self._der.phy(), -self._der.psi()
+    
     def getAX(self,nfig=1,title=''):
         return self._space.plot(self.u,self.v,nfig=nfig,title=title)
        
@@ -125,9 +123,6 @@ class Cylinder(__Potential__):
             mpatches.Circle((offset[0],offset[1]), self.r, color='0.8', ec="none")
         )
 
-    def getVelocities(self):
-        return self._der.phy(), -self._der.psi()
-    
     def updateAX(self,nfig=1):
         ax = super().getAX(nfig=nfig,title='Potential flow : Cylinder')
         return AX
@@ -144,14 +139,6 @@ class FreeVortex(__Potential__):
         self.patches.append(
             mpatches.Annulus((offset[0],offset[1]),r,width, color='0.6', ec="none")
         )
-
-    def getVelocities(self):
-        utheta = self._der.phy()
-        Y = self._space.Y - np.imag(self.offset)
-        X = self._space.X - np.real(self.offset)
-        ur = np.zeros_like(utheta)
-        theta = np.arctan(Y/X) - np.pi/2
-        return utheta*np.cos(theta), utheta*np.sin(theta)
 
     def updateAX(self,nfig=1):
         ax = super().getAX(nfig=nfig,title='Potential flow : Free vortex')
