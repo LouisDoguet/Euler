@@ -3,7 +3,17 @@ import lib.potential as pot
 
 class Foppl(pot.__Potential__):
     def __init__(self,U,r,rho,z0,space=pot.Space([-1,5],[0,3],1000)):
-        
+        ''' 
+        Foppl vortex system around a cylinder.
+        Created by superimposing a cylinder and four free vortices.
+
+        @param U: free stream velocity
+        @param r: radius of the cylinder
+        @param rho: strength of the vortices
+        @param z0: Upper vortex position (complex number)
+        @param space: (Optional) Space object defining the computational grid
+        '''
+
         super().__init__(space)
         self.r = r
         self.U = U
@@ -25,8 +35,30 @@ class Foppl(pot.__Potential__):
         self.__object__ = self.cylinder + (self.V1 + self.V2 + self.V3 + self.V4)
 
     def updateSpace(self,space):
+        '''
+        Update the computational space of the Foppl vortex system.
+
+        @param space: new Space object
+        '''
         return Foppl(U=self.U, r=self.r, rho=self.rho, z0=self.z0, space=space)
+
+    def plot_cylinder(self):
+        '''
+        Plot only the cylinder vortex system.
+        '''
+        self.cylinder.plot(title='Cylinder in Foppl Vortex System \n U={}, r={}'.format(self.U,self.r))
+
+    def plot_vortices(self):
+        '''
+        Plot only the free vortices in the Foppl vortex system.
+        '''
+        (self.V1 + self.V2 + self.V3 + self.V4).plot(title='Free Vortices in Foppl Vortex System \n ρ={}, z0={:.2f}'.format(self.rho,self.z0))
 
 
     def plot(self):
-        self.__object__.plot()
+        '''
+        Plot the Foppl vortex system.
+
+        @param title: title of the plot
+        '''
+        self.__object__.plot(title='Foppl Vortex System \n U={}, r={}, ρ={}, z0={:.2f}'.format(self.U,self.r,self.rho,self.z0))

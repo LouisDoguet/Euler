@@ -2,19 +2,26 @@ from lib import pot, foppl
 import numpy as np
 import matplotlib.pyplot as plt
 
+# Define computational spaces
 domain = pot.Space([-2,3],[-2,2],100)
 zoom = pot.Space([-0,2],[-1.2,1.2],100)
 
+# Define Foppl vortex offset parameters
 r = 1.5
 theta = 20
 z0 = r*np.exp(1j*np.deg2rad(theta))
 
-cyl = pot.Cylinder(U=1,r=1,space=domain)
-F = foppl.Foppl(U=0.5, r=1, rho=3, z0=z0, space=domain)
-Fzoom = F.updateSpace(zoom)
+# Create and plot potential flow objects
+cylinder = pot.Cylinder(U=1,r=1,space=domain)
+freevortex = pot.FreeVortex(rho=5,space=domain)
+foppl_flow = foppl.Foppl(U=0.5, r=1, rho=3, z0=z0, space=domain)
+foppl_flow_zoom = foppl_flow.updateSpace(zoom)
 
-cyl.plot()
-F.V2.plot()
-(F.V1+F.V2+F.V3+F.V4).plot()
-F.plot()
-Fzoom.plot()
+# Plotting
+cylinder.plot(nfig=1,title='Cylinder Potential Flow')
+freevortex.plot(nfig=2,title='Free Vortex Potential Flow')
+
+foppl_flow.plot_cylinder()
+foppl_flow.plot_vortices()
+foppl_flow.plot()
+foppl_flow_zoom.plot()
