@@ -240,6 +240,38 @@ class FreeVortex(__Potential__):
         
         AX = super().getAX(nfig=nfig,title='Potential flow : Free vortex')
         return AX
+    
+class Wedge(__Potential__):
+    def __init__(self, U, m, offset=[0,0], space=Space([-2,3],[-2,2],100)):
+        '''
+        Create a wedge potential flow object.
+
+        @param U: free stream velocity
+        @param n: wedge exponent
+        @param offset: list [x_offset, y_offset] defining the position of the wedge
+        @param space: (Optional) Space object defining the computational grid
+        '''
+        super().__init__(space,offset)
+        self.U = U
+        self.m = m
+        self.W = AnalyticalFunction(U=self.U, m=self.m, z=self._space.Z - self.offset, f=pot.Wwedge)
+        self._der = AnalyticalFunction(U=self.U, m=self.m, z=self._space.Z - self.offset, f=pot.derWwedge)
+        self.u, self.v = self.getVelocities()
+        if m != 1:
+            self.alpha = np.rad2deg(np.pi/(2*(self.m-1)))
+        else:
+            self.alpha = None
+
+    def updateAX(self,nfig=1):
+        '''
+        Update the axis for plotting the wedge potential flow.
+
+        @param nfig: figure number
+        @return: matplotlib axis object
+        '''
+        
+        AX = super().getAX(nfig=nfig,title='Potential flow : Wedge')
+        return AX
 
 def __function__(**kwargs):
     """

@@ -16,3 +16,9 @@ def derWfreevortex(rho,z):
 
 def Wcylindercirc(U,r,rho,z):
     return Wcylinder(U,r,z) + 1j * rho/(2*np.pi) * np.log(z)
+
+def Wwedge(U,m,z):
+    return U * z ** m
+
+def derWwedge(U,m,z):
+    return U * m * z ** (m - 1)

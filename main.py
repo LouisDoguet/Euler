@@ -14,12 +14,9 @@ z0 = r*np.exp(1j*np.deg2rad(theta))
 # Create and plot potential flow objects
 cylinder = pot.Cylinder(U=1,r=1,space=domain)
 freevortex = pot.FreeVortex(rho=5,space=domain)
-foppl_flow = foppl.Foppl(U=0.5, r=1, rho=3, z0=z0, space=domain)
-foppl_flow_zoom = foppl_flow.updateSpace(zoom)
+foppl_flow = foppl.Foppl(U=1, r=1, rho=3, z0=z0, space=domain)
+foppl_flow_zoom = foppl_flow.updateSpace(zoom) 
 
-# Plotting
-cylinder.plot(nfig=1,title='Cylinder Potential Flow')
-freevortex.plot(nfig=2,title='Free Vortex Potential Flow')
 
 foppl_flow.plot_cylinder()
 foppl_flow.plot_vortices()
