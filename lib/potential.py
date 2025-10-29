@@ -179,6 +179,8 @@ class __Potential__:
             ax.add_artist(copy.copy(p))
         plt.show()
 
+
+
 class Cylinder(__Potential__):
     def __init__(self, U, r, offset=[0,0], space=Space([-2,3],[-2,2],100)):
         '''
@@ -210,7 +212,7 @@ class Cylinder(__Potential__):
         return AX
 
 class FreeVortex(__Potential__):
-    def __init__(self, rho, offset=[0,0], space=Space([-3,3],[-2,2],150,150)):
+    def __init__(self, rho, offset=[0,0], space=Space([-2,3],[-2,2],100)):
         '''
         Create a free vortex potential flow object.
 

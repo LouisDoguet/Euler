@@ -2,7 +2,7 @@ import numpy as np
 import lib.potential as pot 
 
 class Foppl(pot.__Potential__):
-    def __init__(self,U,r,rho,z0,space=pot.Space([-1,5],[0,3],1000)):
+    def __init__(self,U,r,rho,z0,space=pot.Space([-2,3],[-2,2],100)):
         ''' 
         Foppl vortex system around a cylinder.
         Created by superimposing a cylinder and four free vortices.
@@ -31,6 +31,8 @@ class Foppl(pot.__Potential__):
         self.V2 = pot.FreeVortex(-self.rho, self.offsetV2, space=space)
         self.V3 = pot.FreeVortex(-self.rho, self.offsetV3, space=space)
         self.V4 = pot.FreeVortex(self.rho, self.offsetV4, space=space)
+
+        self.vortices = self.V1 + self.V2 + self.V3 + self.V4
 
         self.__object__ = self.cylinder + (self.V1 + self.V2 + self.V3 + self.V4)
 
