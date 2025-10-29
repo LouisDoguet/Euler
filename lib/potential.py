@@ -278,3 +278,25 @@ def __function__(**kwargs):
     Analytic function storing flow data
     """
     return kwargs["f"]
+
+
+class Source(__Potential__):    
+    
+    def __init__(self, m, offset=[0,0], space=Space([-2,3],[-2,2],100)):
+        '''
+        Create a source potential flow object.
+
+        @param m: strength of the source
+        @param offset: list [x_offset, y_offset] defining the position of the source
+        @param space: (Optional) Space object defining the computational grid
+        '''
+        super().__init__(space,offset)
+        self.m = m
+        self.W = AnalyticalFunction(m=self.m, z=self._space.Z - self.offset, f=pot.Wsource)
+        self._der = AnalyticalFunction(m=self.m, z=self._space.Z - self.offset, f=pot.derWsource)
+        self.u, self.v = self.getVelocities()
+        r = 0.2 + abs(m)/50 * 0.6      # outer radius increases
+        width = 0.6*abs(m)/50
+        self.patches.append(
+            mpatches.Annulus((offset[0],offset[1]),r,width, color='0.6', ec="none")
+        )

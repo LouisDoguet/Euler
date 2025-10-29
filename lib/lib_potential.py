@@ -22,3 +22,9 @@ def Wwedge(U,m,z):
 
 def derWwedge(U,m,z):
     return U * m * z ** (m - 1)
+
+def Wsource(m,z):
+    return m/(2*np.pi) * np.log(z)
+
+def derWsource(m,z):
+    return m/(2*np.pi*(z))

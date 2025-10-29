@@ -12,9 +12,12 @@ theta = 20
 z0 = r*np.exp(1j*np.deg2rad(theta))
 
 # Create and plot potential flow objects
-cylinder = pot.Cylinder(U=1,r=1,space=domain)
-freevortex = pot.FreeVortex(rho=5,space=domain)
-foppl_flow = foppl.Foppl(U=1, r=1, rho=3, z0=z0, space=domain)
+val_rho = 3
+val_U = 1
+val_r = 1
+cylinder = pot.Cylinder(U=val_U,r=val_r,space=domain)
+freevortex = pot.FreeVortex(rho=val_rho,space=domain)
+foppl_flow = foppl.Foppl(U=val_U, r=val_r, rho=3, z0=z0, space=domain)
 foppl_flow_zoom = foppl_flow.updateSpace(zoom) 
 
 
