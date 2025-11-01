@@ -1,9 +1,18 @@
-import lib.complex as comp
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
+from matplotlib import cm
+from matplotlib import colors
+import matplotlib.animation as animation
+from mpl_toolkits.mplot3d import Axes3D 
 import numpy as np
 import lib.lib_potential as pot
 import copy
+
+def normalize(val):
+    """
+    `[-pi,pi]` -> `[0,1]`
+    """
+    return (val + np.pi)/(2*np.pi)
 
 class AnalyticalFunction:
     '''
@@ -31,7 +40,7 @@ class AnalyticalFunction:
         '''
         if kwargs:
             self._kwargs = kwargs
-        return comp.Complex(self.function(**self._kwargs))
+        return self.function(**self._kwargs)
 
     def phy(self):
         '''
@@ -57,8 +66,43 @@ class AnalyticalFunction:
         self.X, self.Y = X, Y
         Z = X + 1j*Y
         GRD = self.function(**self._kwargs)
-        self.Z = comp.Complex(GRD) 
+        self.Z = GRD
+        self.__cm__ = np.angle(self.Z)
         return self.Z
+    
+    
+    def plot(self)->None:
+        """
+        Displays wavefunction in 3D.
+
+        - Re(phy) is plotted over Z axis
+        - Im(phy) corresponds to the color
+        """
+        fig = plt.figure(figsize=(6,6))
+        ax = fig.add_subplot(111, projection='3d')
+
+        module = np.absolute(self.Z)
+        phase = np.angle(self.Z)
+
+        norm = colors.Normalize(vmin=0, vmax=2*np.pi)
+        cmap = cm.twilight
+        facecolors = cmap(norm(phase))
+
+        surf = ax.plot_surface(self.X, self.Y, module, facecolors=facecolors, rcount=self.X.shape[0], ccount=self.X.shape[1])
+
+        ax.set_xlabel(r'$x$')
+        ax.set_ylabel('$y$')
+        ax.set_zlabel('|z|')
+        ax.set_title('Analytical Function')
+
+        mappable = cm.ScalarMappable(norm=norm, cmap=cmap)
+        mappable.set_array(phase)
+        cbar = fig.colorbar(mappable, ax=ax, fraction=0.046, pad=0.04, label='arg($z$)')
+
+        cbar.set_ticks([0.0, np.pi, 2*np.pi])
+        cbar.set_ticklabels([r'0', r'$\pi$', r'$2\pi$'])
+
+        plt.show()
 
 
 class Space:
@@ -173,7 +217,6 @@ class __Potential__:
         @param nfig: figure number
         @param title: title of the plot
         '''
-
         ax = self.getAX(nfig=nfig,title=title)
         for p in self.patches:
             ax.add_artist(copy.copy(p))
