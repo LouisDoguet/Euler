@@ -33,7 +33,7 @@ def kirchoff_flow(z):
     A = (1/2)*np.exp(-np.pi*z/q) + 1
     t = A - np.sqrt(A**2 - 1)
     return 2*t**a
-
+'''
 # Animations for transformation
 dom = Space([0,2],[-0.5,0.5],100)
 M = mp.ConformalMapping(space=dom)
@@ -44,8 +44,9 @@ M.animate(slide,np.linspace(0,1,100),title='$[1] + \\frac{1}{2} e^{-\pi w / q}$'
 M.animate(pow,np.linspace(1,2,100),title='$ ( 1 + \\frac{1}{2} e^{-\pi w / q} )^{[2]} $')
 M.animate(slide,-np.linspace(0,1,100),title='$ ( 1 + \\frac{1}{2} e^{-\pi w / q} )^{2} - [1] $')
 M.animate(sqrt,np.linspace(1,2,100),title='$ [ \sqrt{ ( 1 + \\frac{1}{2} e^{-\pi w / q} )^{2} - 1 } ]$')
-
+'''
 # Kirchhoff mapping
+dom = Space([-2,2],[-1,1],1000)
 M = mp.ConformalMapping(space=dom)
 M.apply(kirchoff_flow)
 M.plot()
