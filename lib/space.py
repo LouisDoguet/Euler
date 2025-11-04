@@ -27,7 +27,7 @@ class Space:
         self.X, self.Y = np.meshgrid(self._x,self._y)
         self.Z = self.X+1j*self.Y
 
-    def plot(self,u,v,nfig=1,title=''):
+    def plot(self,u,v,nfig=1,title='',density=3):
         '''
         Plot the given velocity field as streamlines.
 
@@ -41,7 +41,7 @@ class Space:
 
         fig = plt.figure(nfig)  # Reuse figure if it exists
         ax = fig.gca()
-        ax.streamplot(self.X,self.Y,u,v,density=3,color=speed,linewidth=1,arrowsize=0.5,cmap='viridis',broken_streamlines=True)
+        ax.streamplot(self.X,self.Y,u,v,density=density,color=speed,linewidth=1,arrowsize=0.5,cmap='Greys',broken_streamlines=True)
         ax.set_aspect('equal')
         ax.set_title(title)
         ax.set_xlabel('X')

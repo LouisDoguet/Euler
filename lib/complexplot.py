@@ -42,9 +42,10 @@ class ComPlot:
         self.__plot__(title=title)
         plt.show()
 
-    def animate(self,f,var_arg):
+    def animate(self,f,var_arg,title=''):
 
         fig, ax, im, cont = self.__plot__()
+        ax.set_title(title)
 
         def update(frame):
 
