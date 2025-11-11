@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Define computational spaces
-domain = pot.Space([-2,3],[-2,2],100)
+domain = pot.Space([-2,3],[0,2],100)
 zoom = pot.Space([-0,2],[-1.2,1.2],100)
 
 # Define Foppl vortex offset parameters

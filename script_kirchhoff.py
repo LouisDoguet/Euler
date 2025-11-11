@@ -46,7 +46,7 @@ M.animate(slide,-np.linspace(0,1,100),title='$ ( 1 + \\frac{1}{2} e^{-\pi w / q}
 M.animate(sqrt,np.linspace(1,2,100),title='$ [ \sqrt{ ( 1 + \\frac{1}{2} e^{-\pi w / q} )^{2} - 1 } ]$')
 '''
 # Kirchhoff mapping
-dom = Space([-2,2],[-1,1],1000)
+dom = Space([0,2],[0,0.5],1000)
 M = mp.ConformalMapping(space=dom)
 M.apply(kirchoff_flow)
 M.plot()

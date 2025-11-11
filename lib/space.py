@@ -41,7 +41,7 @@ class Space:
 
         fig = plt.figure(nfig)  # Reuse figure if it exists
         ax = fig.gca()
-        ax.streamplot(self.X,self.Y,u,v,density=density,color=speed,linewidth=1,arrowsize=0.5,cmap='Greys',broken_streamlines=True)
+        ax.streamplot(self.X,self.Y,u,v,density=density,color=speed,linewidth=1,arrowsize=0.5,cmap='magma',broken_streamlines=True)
         ax.set_aspect('equal')
         ax.set_title(title)
         ax.set_xlabel('X')

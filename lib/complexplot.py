@@ -16,7 +16,7 @@ class ComPlot:
         z = conformal_mapping.W 
         return cls(x,y,z)
 
-    def __plot__(self,title=''):
+    def __plot__(self,title='',xlabel='x',ylabel='y',levels=50):
 
         fig, ax = plt.subplots(figsize=(12, 6))
 
@@ -28,18 +28,18 @@ class ComPlot:
 
         ext = (self.X.min(), self.X.max(), self.Y.min(), self.Y.max())
         im = ax.imshow(phase, extent=ext, origin='lower', cmap='hsv', alpha=module, vmin=-np.pi, vmax=np.pi)
-        cont = ax.contour(self.X, self.Y, np.imag(self.Z), levels=50, colors='black', linewidths=0.5)
+        cont = ax.contour(self.X, self.Y, np.imag(self.Z), levels=levels, colors='black', linewidths=0.5)
 
-        ax.set_xlabel('x')
-        ax.set_ylabel('y')
+        ax.set_xlabel(xlabel)
+        ax.set_ylabel(ylabel)
         ax.set_title(title)
         cbar = fig.colorbar(im, ticks=[-3,0,3])
         cbar.ax.set_yticklabels([r'-$\pi$','0',r'$\pi$'])
 
         return fig, ax, im, cont
     
-    def plot(self,title=''):
-        self.__plot__(title=title)
+    def plot(self,title='',xlabel='x',ylabel='y',levels=50):
+        self.__plot__(title=title,xlabel=xlabel,ylabel=ylabel,levels=levels)
         plt.show()
 
     def animate(self,f,var_arg,title=''):

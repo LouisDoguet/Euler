@@ -20,8 +20,8 @@ class ConformalMapping:
         self._list_function.append(f)
         self.W = f(self.W)
 
-    def plot(self):
-        ComPlot.fromMapping(self).plot(title='Conformal Mapping')
+    def plot(self,levels=50):
+        ComPlot.fromMapping(self).plot(title='Conformal Mapping',xlabel=r'$\phi$',ylabel=r'$\psi$',levels=levels)
 
     def streamlines(self,xlabel='',ylabel='',title=''):
         ax = self._space.plot(np.real(self.W),-np.imag(self.W),title=title,density=1)

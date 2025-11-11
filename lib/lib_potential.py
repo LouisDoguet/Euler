@@ -3,7 +3,7 @@
 import numpy as np
 
 def Wcylinder(U,r,z):
-    return (z + r**2/z)
+    return U*(z + r**2/z)
 
 def derWcylinder(U,r,z):
     return U*(1-r**2/z**2)
